@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SYN Project Site</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="grid-overlay"></div>
+
+    <div class="app-container">
+        <div class="card-container">
+            <div id="main-card" class="card">
+                <div class="card-title-box">
+                    <h1 id="card-title">Welcome!</h1>
+                </div>
+                <div class="card-body">
+                    <p id="card-text">Click Next to start generating cards.</p>
+                </div>
+                <div id="card-bottom-bar" class="card-bottom-bar"></div>
+            </div>
+        </div>
+
+        <button id="menu-btn" class="control-btn left">Menu</button>
+        <button id="next-btn" class="control-btn right">Next &rarr;</button>
+    </div>
+
+    <div id="history-menu" class="side-menu">
+        <button id="close-btn" class="close-btn">&times;</button>
+        
+        <h2>Progress Stats</h2>
+        <div class="stats-container">
+            <div class="stat-row">
+                <span class="stat-label">Plants/Fungal</span>
+                <progress id="prog-green" value="0" max="10"></progress>
+                <span id="score-green" class="stat-score">0</span>
+            </div>
+            <div class="stat-row">
+                <span class="stat-label">Marine</span>
+                <progress id="prog-blue" value="0" max="10"></progress>
+                <span id="score-blue" class="stat-score">0</span>
+            </div>
+            <div class="stat-row">
+                <span class="stat-label">Terrestrial</span>
+                <progress id="prog-yellow" value="0" max="10"></progress>
+                <span id="score-yellow" class="stat-score">0</span>
+            </div>
+            <div class="stat-row">
+                <span class="stat-label">Flying</span>
+                <progress id="prog-red" value="0" max="10"></progress>
+                <span id="score-red" class="stat-score">0</span>
+            </div>
+        </div>
+
+        <hr class="divider">
+
+        <h2>Card History</h2>
+        <ul id="history-list">
+            </ul>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
