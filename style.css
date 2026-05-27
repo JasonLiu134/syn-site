@@ -54,7 +54,7 @@ body {
     padding: 20px;
     text-align: center;
     border-bottom: 2px solid #1a1a1a;
-    background: rgba(255, 255, 255, 0.82);
+    background: rgba(255, 255, 255, 0.7);
     backdrop-filter: blur(2px);
 }
 
@@ -73,8 +73,8 @@ body {
     font-size: 1.1rem;
     line-height: 1.5;
     color: #1a1a1a;
-    background: rgba(255, 255, 255, 0.82);
-    backdrop-filter: blur(2px);
+    background: rgba(255, 255, 255, 0.55);
+    backdrop-filter: blur(3px);
 }
 
 /* The Bottom Bar - Straight and Dark */
