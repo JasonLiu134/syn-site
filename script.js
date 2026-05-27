@@ -36,6 +36,10 @@ function setCardVisuals(type) {
     const root = document.documentElement;
     root.style.setProperty('--current-theme-color-dark', themes[type].dark);
     root.style.setProperty('--current-theme-color-faint', themes[type].faint);
+
+    const card = document.getElementById('main-card');
+    card.classList.remove('type-green', 'type-blue', 'type-yellow', 'type-red');
+    card.classList.add(`type-${type}`);
 }
 
 function generateNextCard() {
