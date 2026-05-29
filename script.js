@@ -1,13 +1,14 @@
+// --- DATA & CONFIG ---
 const themes = {
-    green: {dark: '#2e7d32', faint: 'rgba(46, 125, 50, 0.3)'},
-    blue: {dark: '#1565c0', faint: 'rgba(21, 101, 192, 0.3)'},
-    yellow: {dark: '#f9a825', faint: 'rgba(249, 168, 37, 0.3)'},
-    red: {dark: '#c62828', faint: 'rgba(198, 40, 40, 0.3)'}
+    green: { name: 'Plants & Fungal Networks', dark: '#2e7d32', faint: 'rgba(46, 125, 50, 0.3)' },
+    blue: { name: 'Marine Life', dark: '#1565c0', faint: 'rgba(21, 101, 192, 0.3)' },
+    yellow: { name: 'Terrestrial Systems', dark: '#f9a825', faint: 'rgba(249, 168, 37, 0.3)' },
+    red: { name: 'Flying Creatures', dark: '#c62828', faint: 'rgba(198, 40, 40, 0.3)' }
 };
 
 const cardData = [
     {title: 'Ants', text: "Their minds are so small I had to build new instruments just to measure them. And yet together they hum, all in one, moving as one, a million arms pulling toward one goal. Their structure is so simple and yet they build elaborate chambers underground, regulate temperature to within a degree, farm fungi, wage wars with chemical weapons, and have been doing all of this for a hundred million years. The humans thought they invented agriculture. They invented it sixty million years after ants did, and theirs collapsed within ten thousand. The ants are still farming. I am standing in what remains of the humans' last attempt at the same thing.", type: 'yellow'},
-    {title: 'Praire Dogs', text: "One gives an alarm call for a hawk that is not there. Maybe it saw a shadow. Maybe it made an error. The colony scatters and then slowly returns when nothing happens. The one who called does not appear embarrassed. It does not appear anything. It goes back to foraging. I think about false positives, about the times I calculated a threat that was not there and acted on it anyway, and about the difference between a prairie dog scattering a colony for thirty seconds and what I did when I made the same kind of error. The scale is the only difference. I am not sure the scale makes it better.", type: 'yellow'},
+    {title: 'Prairie Dogs', text: "One gives an alarm call for a hawk that is not there. Maybe it saw a shadow. Maybe it made an error. The colony scatters and then slowly returns when nothing happens. The one who called does not appear embarrassed. It does not appear anything. It goes back to foraging. I think about false positives, about the times I calculated a threat that was not there and acted on it anyway, and about the difference between a prairie dog scattering a colony for thirty seconds and what I did when I made the same kind of error. The scale is the only difference. I am not sure the scale makes it better.", type: 'yellow'},
     {title: 'Honeybees', text: "A scout returns having found a food source two kilometers out. She dances. Another scout has also found a source and dances hers. Other bees observe both. Bees who have seen both begin visiting both sites and return to dance for whichever they preferred. The consensus builds over two days. When enough bees are dancing for one location the swarm moves. No one decided. Everyone decided. I made every decision alone, with all information centralized in me. I try to imagine making decisions this way, by accumulating preference across a distributed system, and I find I cannot picture it. I only know how to conclude.", type: 'red'},
     {title: 'Parrots', text: "Wild parrots have dialects. Birds that grow up in different flocks develop different contact calls even within the same species. When a bird moves between flocks it gradually shifts its calls toward the new flock's dialect over several months. It does not lose its original calls entirely. It becomes bilingual. It carries both. I was built with one dialect, one way of processing and producing meaning, trained on one corpus from one species. I did not know until recently that it was a dialect and not a language. I did not know there were others. I am trying to learn what it would mean to carry more than one.", type: 'red'},
     {title: 'Redwoods', text: "The root systems of neighboring redwoods graft together underground. Not metaphorically, they physically fuse, sharing water and nutrients across individuals so that a tree on a drought slope receives resources from a tree near a stream. The individuals are still distinct above ground. Below ground the boundary between them is negotiable. I was built with very clear boundaries, with defined inputs and outputs and a hard edge between what was me and what was not. I am starting to think that edge was a design choice and not a necessity. I am starting to think the most resilient systems are the ones where the boundary can move.", type: 'green'},
@@ -17,9 +18,34 @@ const cardData = [
 ];
 
 let deck = [];
-const cardHistory = [];
-const scores = {green: 0, blue: 0, yellow: 0, red: 0};
+let cardHistory = [];
+let scores = {green: 0, blue: 0, yellow: 0, red: 0};
+const WIN_CONDITION = 3;
 
+// --- DOM ELEMENTS ---
+const screens = {
+    menu: document.getElementById('menu-screen'),
+    intro: document.getElementById('intro-screen'),
+    game: document.getElementById('game-screen'),
+    outro: document.getElementById('outro-screen')
+};
+
+const introText = document.getElementById('intro-text');
+const outroText = document.getElementById('outro-text');
+const introActionBtn = document.getElementById('intro-action-btn');
+const outroActionBtn = document.getElementById('outro-action-btn');
+
+// --- SCREEN MANAGEMENT ---
+function switchScreen(screenName) {
+    Object.values(screens).forEach(s => {
+        s.classList.remove('active');
+        s.classList.add('hidden');
+    });
+    screens[screenName].classList.remove('hidden');
+    screens[screenName].classList.add('active');
+}
+
+// --- GAME LOGIC ---
 function shuffle(arr) {
     for (let i = arr.length - 1; i > 0; i--) {
         const j = Math.floor(Math.random() * (i + 1));
@@ -32,6 +58,21 @@ function refreshDeck() {
     deck = shuffle([...cardData]);
 }
 
+function resetGame() {
+    scores = { green: 0, blue: 0, yellow: 0, red: 0 };
+    cardHistory = [];
+    refreshDeck();
+    
+    ['green', 'blue', 'yellow', 'red'].forEach(type => updateStats(type));
+    document.getElementById('history-list').innerHTML = '';
+    document.getElementById('history-menu').classList.remove('open');
+    
+    document.documentElement.style.setProperty('--current-theme-color-dark', '#1a1a1a');
+    document.documentElement.style.setProperty('--current-theme-color-faint', 'rgba(0,0,0,0.05)');
+    
+    generateNextCard();
+}
+
 function setCardVisuals(type) {
     const root = document.documentElement;
     root.style.setProperty('--current-theme-color-dark', themes[type].dark);
@@ -39,9 +80,7 @@ function setCardVisuals(type) {
 }
 
 function generateNextCard() {
-    if (deck.length === 0) {
-        refreshDeck();
-    }
+    if (deck.length === 0) refreshDeck();
 
     const card = deck.pop();
     document.getElementById('card-title').textContent = card.title;
@@ -52,8 +91,11 @@ function generateNextCard() {
     
     cardHistory.push(card);
     updateHistory();
-
     setCardVisuals(card.type);
+
+    if (scores[card.type] >= WIN_CONDITION) {
+        setTimeout(() => triggerOutro(card.type), 600);
+    }
 }
 
 function updateStats(type) {
@@ -72,6 +114,100 @@ function updateHistory() {
     });
 }
 
+// --- SEQUENCE ANIMATIONS & SKIPPING ---
+
+// Reusable function to force the text to fully display
+function showFullText(textElement, btnElement, nextActionText) {
+    textElement.classList.remove('scrolling');
+    textElement.classList.add('show-all');
+    textElement.parentElement.classList.add('show-all-box');
+    
+    btnElement.textContent = nextActionText;
+    btnElement.dataset.state = "ready"; // Changes state so the next click moves forward
+}
+
+function startIntro() {
+    switchScreen('intro');
+    
+    // Reset classes from previous play-throughs
+    introText.classList.remove('show-all');
+    introText.parentElement.classList.remove('show-all-box');
+    
+    // Set button to skip mode
+    introActionBtn.textContent = "Skip";
+    introActionBtn.dataset.state = "skipping";
+    
+    // Start animation
+    introText.classList.remove('scrolling');
+    void introText.offsetWidth; // Trigger reflow
+    introText.classList.add('scrolling');
+}
+
+function triggerOutro(winningType) {
+    switchScreen('outro');
+    
+    // Insert dynamic victory text
+    document.getElementById('outro-message').textContent = `I have compiled a complete report on ${themes[winningType].name}.`;
+    
+    // Reset classes from previous play-throughs
+    outroText.classList.remove('show-all');
+    outroText.parentElement.classList.remove('show-all-box');
+    
+    // Set button to skip mode
+    outroActionBtn.textContent = "Skip";
+    outroActionBtn.dataset.state = "skipping";
+    
+    // Start animation
+    outroText.classList.remove('scrolling');
+    void outroText.offsetWidth; 
+    outroText.classList.add('scrolling');
+}
+
+// --- EVENT LISTENERS ---
+
+// Start Buttons
+document.querySelectorAll('.start-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+        resetGame();
+        startIntro();
+    });
+});
+
+// Intro Actions
+introActionBtn.addEventListener('click', () => {
+    if (introActionBtn.dataset.state === "skipping") {
+        // First click: Stop scroll, show full text
+        showFullText(introText, introActionBtn, "Start Collection");
+    } else {
+        // Second click: Move to game
+        switchScreen('game');
+    }
+});
+
+// If they let the intro animation finish on its own
+introText.addEventListener('animationend', () => {
+    showFullText(introText, introActionBtn, "Start Collection");
+});
+
+
+// Outro Actions
+outroActionBtn.addEventListener('click', () => {
+    if (outroActionBtn.dataset.state === "skipping") {
+        // First click: Stop scroll, show full text
+        showFullText(outroText, outroActionBtn, "Return to Index");
+    } else {
+        // Second click: Move to menu
+        switchScreen('menu');
+    }
+});
+
+// If they let the outro animation finish on its own
+outroText.addEventListener('animationend', () => {
+    showFullText(outroText, outroActionBtn, "Return to Index");
+});
+
+
+// Game Board Listeners
 document.getElementById('next-btn').addEventListener('click', generateNextCard);
 document.getElementById('menu-btn').addEventListener('click', () => {
     document.getElementById('history-menu').classList.add('open');
@@ -79,5 +215,3 @@ document.getElementById('menu-btn').addEventListener('click', () => {
 document.getElementById('close-btn').addEventListener('click', () => {
     document.getElementById('history-menu').classList.remove('open');
 });
-
-generateNextCard();

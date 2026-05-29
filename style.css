@@ -21,20 +21,137 @@ body {
     z-index: -1;
 }
 
+/* --- SCREEN MANAGEMENT --- */
+.screen {
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: opacity 0.4s ease;
+}
+
+.screen.hidden {
+    opacity: 0;
+    pointer-events: none;
+    z-index: -10;
+}
+
+.screen.active {
+    opacity: 1;
+    pointer-events: all;
+    z-index: 10;
+}
+
+/* --- MAIN MENU STYLES --- */
+.menu-container {
+    background: white;
+    padding: 50px;
+    border-radius: 24px;
+    border: 2px solid #1a1a1a;
+    box-shadow: 0 15px 45px rgba(0,0,0,0.1);
+    text-align: center;
+}
+
+.menu-container h1 { font-size: 2rem; color: #1a1a1a; margin-bottom: 10px; }
+.menu-container p { color: #555; margin-bottom: 30px; }
+
+.menu-buttons {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.menu-btn {
+    padding: 15px 30px;
+    background-color: #1a1a1a;
+    color: white;
+    border: none;
+    border-radius: 12px;
+    font-size: 1.1rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition: transform 0.2s, background-color 0.2s;
+}
+
+.menu-btn:hover { transform: scale(1.05); background-color: #333; }
+
+/* --- INTRO / OUTRO SEQUENCE STYLES --- */
+.sequence-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+    padding: 50px;
+}
+
+.scroll-box {
+    width: 100%;
+    max-width: 600px;
+    height: 60vh;
+    position: relative;
+    overflow: hidden;
+    margin-bottom: 30px;
+    mask-image: linear-gradient(to bottom, transparent, black 10%, black 90%, transparent);
+    -webkit-mask-image: linear-gradient(to bottom, transparent, black 10%, black 90%, transparent);
+}
+
+.scroll-text {
+    position: absolute;
+    top: 100%;
+    width: 100%;
+    text-align: center;
+    font-size: 1.25rem;
+    line-height: 2;
+    color: #1a1a1a;
+}
+
+.scroll-text h2 { margin-bottom: 20px; font-size: 2rem; }
+.scroll-text p { margin-bottom: 25px; }
+
+.scrolling { animation: scrollUp 15s linear forwards; }
+
+@keyframes scrollUp {
+    0% { top: 100%; }
+    100% { top: -100%; }
+}
+
+/* NEW: Classes to display the full text instantly without scrolling */
+.scroll-box.show-all-box {
+    mask-image: none;
+    -webkit-mask-image: none;
+    overflow-y: auto;
+    display: flex;
+    align-items: center; /* Vertically centers the static text */
+}
+
+.scroll-text.show-all {
+    position: relative;
+    top: 0;
+    animation: none;
+}
+
+
+/* --- GAME SCREEN STYLES --- */
 .app-container {
     height: 100%;
     display: flex;
     justify-content: center;
     align-items: center;
+    width: 100%;
+    position: relative;
 }
+
+.card-container { padding: 20px; }
 
 .card {
     background: white; 
     width: 640px;
     min-height: 300px;
     border-radius: 24px;
-    /* Uses the dark theme color for the shadow */
-    box-shadow: 0 15px 45px var(--current-theme-color-faint); 
+    box-shadow: 0 15px 45px var(--current-theme-color-faint, rgba(0,0,0,0.1)); 
     display: flex;
     flex-direction: column;
     overflow: hidden;
@@ -42,16 +159,8 @@ body {
     transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
 }
 
-.card-title-box {
-    padding: 20px;
-    text-align: center;
-    border-bottom: 2px solid #1a1a1a;
-}
-
-.card-title-box h1 {
-    font-size: 1.4rem;
-    color: #1a1a1a;
-}
+.card-title-box { padding: 20px; text-align: center; border-bottom: 2px solid #1a1a1a; }
+.card-title-box h1 { font-size: 1.4rem; color: #1a1a1a; }
 
 .card-body {
     padding: 40px;
@@ -65,16 +174,14 @@ body {
     color: #333;
 }
 
-/* The Bottom Bar - Straight and Dark */
 .card-bottom-bar {
     height: 45px;
     width: 100%;
-    background-color: var(--current-theme-color-dark); /* Set in JS */
+    background-color: var(--current-theme-color-dark, #1a1a1a); 
     border-top: 2px solid #1a1a1a;
     transition: background-color 0.3s ease;
 }
 
-/* Buttons */
 .control-btn {
     position: absolute;
     bottom: 30px;
@@ -91,8 +198,8 @@ body {
 .control-btn:hover { transform: scale(1.05); }
 .left { left: 40px; }
 .right { right: 40px; }
+.center { position: relative; bottom: 0; }
 
-/* Side Menu */
 .side-menu {
     position: fixed;
     top: 0; left: -400px;
@@ -107,23 +214,10 @@ body {
 }
 
 .side-menu.open { left: 0; }
-
-.close-btn {
-    float: right;
-    font-size: 2rem;
-    cursor: pointer;
-    background: none; border: none;
-}
-
+.close-btn { float: right; font-size: 2rem; cursor: pointer; background: none; border: none; }
 .divider { margin: 25px 0; border: 1px solid #eee; }
 
-/* Progress Bars */
-progress {
-    width: 150px;
-    height: 12px;
-    border-radius: 10px;
-}
-
+progress { width: 150px; height: 12px; border-radius: 10px; }
 progress::-webkit-progress-bar { background: #eee; border-radius: 10px; }
 #prog-green::-webkit-progress-value { background: #2e7d32; }
 #prog-blue::-webkit-progress-value { background: #1565c0; }

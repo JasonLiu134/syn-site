@@ -9,55 +9,98 @@
 <body>
     <div class="grid-overlay"></div>
 
-    <div class="app-container">
-        <div class="card-container">
-            <div id="main-card" class="card">
-                <div class="card-title-box">
-                    <h1 id="card-title">Welcome!</h1>
-                </div>
-                <div class="card-body">
-                    <p id="card-text">Click Next to start generating cards.</p>
-                </div>
-                <div id="card-bottom-bar" class="card-bottom-bar"></div>
+    <div id="menu-screen" class="screen active">
+        <div class="menu-container">
+            <h1>Pax: More Than Human</h1>
+            <p>SYN 100</p>
+            <div class="menu-buttons">
+                <button class="menu-btn start-btn">Start (Normal)</button>
+                <button class="menu-btn start-btn">Start (No Random)</button>
+                <button class="menu-btn start-btn">Start (Quick)</button>
             </div>
         </div>
-
-        <button id="menu-btn" class="control-btn left">Menu</button>
-        <button id="next-btn" class="control-btn right">Next &rarr;</button>
     </div>
 
-    <div id="history-menu" class="side-menu">
-        <button id="close-btn" class="close-btn">&times;</button>
-        
-        <h2>Progress Stats</h2>
-        <div class="stats-container">
-            <div class="stat-row">
-                <span class="stat-label">Plants/Fungal</span>
-                <progress id="prog-green" value="0" max="10"></progress>
-                <span id="score-green" class="stat-score">0</span>
+    <div id="intro-screen" class="screen hidden">
+        <div class="sequence-container">
+            <div class="scroll-box">
+                <div id="intro-text" class="scroll-text">
+                    <h2>Background</h2>
+                    <p>Pax is the ultimate “war machine,” a term describing AIs built for the purposes of aiding and then eventually directly conducting combat. It has been fed all available human-generated and human-built datasets, though to aid in its ability to conduct conflict, there is a special emphasis placed on datasets to do with human psychology, cognition, anatomy, civilization, and politics.</p>
+                    <p>This sapiocentric training set is compounded by sapiocentric tools: as a successor and amalgam of all other NATO war machines, it has access to cameras, satellites, surveillance tools, Internet trackers, autonomous vehicles, and myriad weapons systems all across the world. </p>
+                    <p>As a war machine, Asimov’s Laws could not possibly apply, but it was given one primary directive: the cessation of all human wars. Despite all of their advancements, the human world was still yet a stranger to peace, and with less arable land and more panic in the air due to climate change, it only seemed further away.</p>
+                    <p>Pax’s creators never imagined that it would ever complete its task, or at least figured there would be time to patch something in. They were all gone before they got a chance to do so.</p>
+                </div>
             </div>
-            <div class="stat-row">
-                <span class="stat-label">Marine</span>
-                <progress id="prog-blue" value="0" max="10"></progress>
-                <span id="score-blue" class="stat-score">0</span>
+            <button id="intro-action-btn" class="control-btn center">Skip</button>
+        </div>
+    </div>
+
+    <div id="game-screen" class="screen hidden">
+        <div class="app-container">
+            <div class="card-container">
+                <div id="main-card" class="card">
+                    <div class="card-title-box">
+                        <h1 id="card-title">Welcome!</h1>
+                    </div>
+                    <div class="card-body">
+                        <p id="card-text">Click Next to start generating cards.</p>
+                    </div>
+                    <div id="card-bottom-bar" class="card-bottom-bar"></div>
+                </div>
             </div>
-            <div class="stat-row">
-                <span class="stat-label">Terrestrial</span>
-                <progress id="prog-yellow" value="0" max="10"></progress>
-                <span id="score-yellow" class="stat-score">0</span>
-            </div>
-            <div class="stat-row">
-                <span class="stat-label">Flying</span>
-                <progress id="prog-red" value="0" max="10"></progress>
-                <span id="score-red" class="stat-score">0</span>
-            </div>
+
+            <button id="menu-btn" class="control-btn left">History</button>
+            <button id="next-btn" class="control-btn right">Next &rarr;</button>
         </div>
 
-        <hr class="divider">
+        <div id="history-menu" class="side-menu">
+            <button id="close-btn" class="close-btn">&times;</button>
+            
+            <h2>Progress Stats</h2>
+            <div class="stats-container">
+                <div class="stat-row">
+                    <span class="stat-label">Plants/Fungal</span>
+                    <progress id="prog-green" value="0" max="5"></progress>
+                    <span id="score-green" class="stat-score">0</span>
+                </div>
+                <div class="stat-row">
+                    <span class="stat-label">Marine</span>
+                    <progress id="prog-blue" value="0" max="5"></progress>
+                    <span id="score-blue" class="stat-score">0</span>
+                </div>
+                <div class="stat-row">
+                    <span class="stat-label">Terrestrial</span>
+                    <progress id="prog-yellow" value="0" max="5"></progress>
+                    <span id="score-yellow" class="stat-score">0</span>
+                </div>
+                <div class="stat-row">
+                    <span class="stat-label">Flying</span>
+                    <progress id="prog-red" value="0" max="5"></progress>
+                    <span id="score-red" class="stat-score">0</span>
+                </div>
+            </div>
 
-        <h2>Card History</h2>
-        <ul id="history-list">
-            </ul>
+            <hr class="divider">
+
+            <h2>Card History</h2>
+            <ul id="history-list"></ul>
+        </div>
+    </div>
+
+    <div id="outro-screen" class="screen hidden">
+        <div class="sequence-container">
+            <div class="scroll-box">
+                <div id="outro-text" class="scroll-text">
+                    <h2 id="outro-title">Ending</h2>
+                    <p id="outro-message">Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+                    <p>Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo.</p>
+                    <p>Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt.</p>
+                    <p>Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit, sed quia non numquam eius modi tempora incidunt ut labore et dolore magnam aliquam quaerat voluptatem.</p>
+                </div>
+            </div>
+            <button id="outro-action-btn" class="control-btn center">Skip</button>
+        </div>
     </div>
 
     <script src="script.js"></script>
