@@ -1,0 +1,6 @@
+{
+    "Terrestrial": ["Ants", "Prairie Dogs", "Elephants"],
+    "Flying": ["Honeybees", "Parrots", "Crows"],
+    "Marine": ["Sea Lions", "Dolphins", "Octopi"],
+    "Plants/Fungi": ["Mycelium", "Redwoods", "Slime Mold"]
+}
