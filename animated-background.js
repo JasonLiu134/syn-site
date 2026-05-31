@@ -29,7 +29,9 @@ for (let i = 0; i < particleCount; i++) {
         y: Math.random() * canvas.height,
         vx: (Math.random() - 0.5) * speedFactor,
         vy: (Math.random() - 0.5) * speedFactor,
-        radius: 2
+        radius: 2,
+        twinkleSpeed: 0.001 + Math.random() * 0.002, // Random twinkle speed
+        twinklePhase: Math.random() * Math.PI * 2    // Random starting phase
     });
 }
 
@@ -37,14 +39,14 @@ for (let i = 0; i < particleCount; i++) {
 function animate() {
     // Clear canvas
     ctx.clearRect(0, 0, canvas.width, canvas.height);
-    
+
     // Update and draw particles
     particles.forEach((p) => {
         // Update position
         p.x += p.vx;
         p.y += p.vy;
-        
-        // Bounce off edges with better edge handling
+
+        // Bounce off edges of screen
         if (p.x < 0) {
             p.x = 0;
             p.vx = -p.vx;
@@ -61,14 +63,15 @@ function animate() {
             p.y = canvas.height;
             p.vy = -p.vy;
         }
-        
-        // Draw point
+
+        // Draw points
         ctx.beginPath();
         ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
-        ctx.fillStyle = 'rgba(255, 255, 255, 0.8)';
+        let alpha = 0.5 + Math.sin(Date.now() * p.twinkleSpeed + p.twinklePhase) * 0.4; // Give some twinkle
+        ctx.fillStyle = `rgba(255, 255, 255, ${alpha})`;
         ctx.fill();
     });
-    
+
     // Draw lines between nearby particles
     for (let i = 0; i < particles.length; i++) {
         for (let j = i + 1; j < particles.length; j++) {
@@ -77,7 +80,7 @@ function animate() {
             const dx = p1.x - p2.x;
             const dy = p1.y - p2.y;
             const distance = Math.sqrt(dx * dx + dy * dy);
-            
+
             if (distance < maxDistance) {
                 ctx.beginPath();
                 ctx.moveTo(p1.x, p1.y);
@@ -90,7 +93,7 @@ function animate() {
             }
         }
     }
-    
+
     // Continue animation
     requestAnimationFrame(animate);
 }
