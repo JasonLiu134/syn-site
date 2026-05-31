@@ -17,8 +17,18 @@ window.addEventListener('resize', resize);
 resize();
 
 // Configuration
-const particleCount = 300;
-const maxDistance = 150;
+// Scale configuration based on screen size
+const screenArea = window.innerWidth * window.innerHeight;
+const screenDiagonal = Math.sqrt(window.innerWidth ** 2 + window.innerHeight ** 2);
+
+// Calculate particle count based on screen area
+let particleCount = Math.floor(screenArea / 7000);
+particleCount = Math.min(Math.max(particleCount, 80), 400); // Max # of points between 80 and 400 particles
+
+// Calculate max distance based on screen diagonal
+let maxDistance = Math.floor(screenDiagonal / 12.5);
+maxDistance = Math.min(Math.max(maxDistance, 100), 200); // Max line distance between 100 and 200 pixels
+
 const speedFactor = 0.5;
 
 // Particle array
