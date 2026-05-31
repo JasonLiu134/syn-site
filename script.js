@@ -35,6 +35,11 @@ const outroText = document.getElementById('outro-text');
 const introActionBtn = document.getElementById('intro-action-btn');
 const outroActionBtn = document.getElementById('outro-action-btn');
 
+const tutorialBtn = document.getElementById('tutorial-btn');
+tutorialBtn.addEventListener("click", function() {
+    window.location.href = "./tutorial.html"; 
+});
+
 // --- SCREEN MANAGEMENT ---
 function switchScreen(screenName) {
     Object.values(screens).forEach(s => {

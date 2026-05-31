@@ -8,14 +8,17 @@
 body {
     background-color: #f7f9fc;
     height: 100vh;
-    overflow: hidden;
+    /*overflow: hidden;*/
 }
 
 .grid-overlay {
     position: fixed;
-    top: 0; left: 0; width: 100%; height: 100%;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
     background-size: 25px 25px;
-    background-image: 
+    background-image:
         linear-gradient(to right, #e8e8e8 1px, transparent 1px),
         linear-gradient(to bottom, #e8e8e8 1px, transparent 1px);
     z-index: -1;
@@ -24,8 +27,10 @@ body {
 /* --- SCREEN MANAGEMENT --- */
 .screen {
     position: absolute;
-    top: 0; left: 0;
-    width: 100%; height: 100%;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -45,17 +50,26 @@ body {
 }
 
 /* --- MAIN MENU STYLES --- */
-.menu-container {
+.menu-container,
+.tutorial-container {
     background: white;
-    padding: 50px;
+    padding: 10vw;
     border-radius: 24px;
     border: 2px solid #1a1a1a;
-    box-shadow: 0 15px 45px rgba(0,0,0,0.1);
+    box-shadow: 0 15px 45px rgba(0, 0, 0, 0.1);
     text-align: center;
-}
 
-.menu-container h1 { font-size: 2rem; color: #1a1a1a; margin-bottom: 10px; }
-.menu-container p { color: #555; margin-bottom: 30px; }
+    h1 {
+        font-size: 2rem;
+        color: #1a1a1a;
+        margin-bottom: 10px;
+    }
+
+    p {
+        color: #555;
+        margin-bottom: 30px;
+    }
+}
 
 .menu-buttons {
     display: flex;
@@ -75,7 +89,10 @@ body {
     transition: transform 0.2s, background-color 0.2s;
 }
 
-.menu-btn:hover { transform: scale(1.05); background-color: #333; }
+.menu-btn:hover {
+    transform: scale(1.05);
+    background-color: #333;
+}
 
 /* --- INTRO / OUTRO SEQUENCE STYLES --- */
 .sequence-container {
@@ -108,14 +125,27 @@ body {
     color: #1a1a1a;
 }
 
-.scroll-text h2 { margin-bottom: 20px; font-size: 2rem; }
-.scroll-text p { margin-bottom: 25px; }
+.scroll-text h2 {
+    margin-bottom: 20px;
+    font-size: 2rem;
+}
 
-.scrolling { animation: scrollUp 15s linear forwards; }
+.scroll-text p {
+    margin-bottom: 25px;
+}
+
+.scrolling {
+    animation: scrollUp 15s linear forwards;
+}
 
 @keyframes scrollUp {
-    0% { top: 100%; }
-    100% { top: -100%; }
+    0% {
+        top: 100%;
+    }
+
+    100% {
+        top: -100%;
+    }
 }
 
 /* NEW: Classes to display the full text instantly without scrolling */
@@ -124,7 +154,8 @@ body {
     -webkit-mask-image: none;
     overflow-y: auto;
     display: flex;
-    align-items: center; /* Vertically centers the static text */
+    align-items: center;
+    /* Vertically centers the static text */
 }
 
 .scroll-text.show-all {
@@ -144,14 +175,16 @@ body {
     position: relative;
 }
 
-.card-container { padding: 20px; }
+.card-container {
+    padding: 20px;
+}
 
 .card {
-    background: white; 
+    background: white;
     width: 640px;
     min-height: 300px;
     border-radius: 24px;
-    box-shadow: 0 15px 45px var(--current-theme-color-faint, rgba(0,0,0,0.1)); 
+    box-shadow: 0 15px 45px var(--current-theme-color-faint, rgba(0, 0, 0, 0.1));
     display: flex;
     flex-direction: column;
     overflow: hidden;
@@ -159,8 +192,16 @@ body {
     transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
 }
 
-.card-title-box { padding: 20px; text-align: center; border-bottom: 2px solid #1a1a1a; }
-.card-title-box h1 { font-size: 1.4rem; color: #1a1a1a; }
+.card-title-box {
+    padding: 20px;
+    text-align: center;
+    border-bottom: 2px solid #1a1a1a;
+}
+
+.card-title-box h1 {
+    font-size: 1.4rem;
+    color: #1a1a1a;
+}
 
 .card-body {
     padding: 40px;
@@ -177,7 +218,7 @@ body {
 .card-bottom-bar {
     height: 45px;
     width: 100%;
-    background-color: var(--current-theme-color-dark, #1a1a1a); 
+    background-color: var(--current-theme-color-dark, #1a1a1a);
     border-top: 2px solid #1a1a1a;
     transition: background-color 0.3s ease;
 }
@@ -195,34 +236,81 @@ body {
     transition: transform 0.2s;
 }
 
-.control-btn:hover { transform: scale(1.05); }
-.left { left: 40px; }
-.right { right: 40px; }
-.center { position: relative; bottom: 0; }
+.control-btn:hover {
+    transform: scale(1.05);
+}
+
+.left {
+    left: 40px;
+}
+
+.right {
+    right: 40px;
+}
+
+.center {
+    position: relative;
+    bottom: 0;
+}
 
 .side-menu {
     position: fixed;
-    top: 0; left: -400px;
-    width: 380px; height: 100%;
+    top: 0;
+    left: -400px;
+    width: 380px;
+    height: 100%;
     background: white;
     padding: 30px;
-    box-shadow: 10px 0 30px rgba(0,0,0,0.05);
+    box-shadow: 10px 0 30px rgba(0, 0, 0, 0.05);
     transition: left 0.4s ease;
     z-index: 100;
     border-right: 2px solid #1a1a1a;
     overflow-y: auto;
 }
 
-.side-menu.open { left: 0; }
-.close-btn { float: right; font-size: 2rem; cursor: pointer; background: none; border: none; }
-.divider { margin: 25px 0; border: 1px solid #eee; }
+.side-menu.open {
+    left: 0;
+}
 
-progress { width: 150px; height: 12px; border-radius: 10px; }
-progress::-webkit-progress-bar { background: #eee; border-radius: 10px; }
-#prog-green::-webkit-progress-value { background: #2e7d32; }
-#prog-blue::-webkit-progress-value { background: #1565c0; }
-#prog-yellow::-webkit-progress-value { background: #f9a825; }
-#prog-red::-webkit-progress-value { background: #c62828; }
+.close-btn {
+    float: right;
+    font-size: 2rem;
+    cursor: pointer;
+    background: none;
+    border: none;
+}
+
+.divider {
+    margin: 25px 0;
+    border: 1px solid #eee;
+}
+
+progress {
+    width: 150px;
+    height: 12px;
+    border-radius: 10px;
+}
+
+progress::-webkit-progress-bar {
+    background: #eee;
+    border-radius: 10px;
+}
+
+#prog-green::-webkit-progress-value {
+    background: #2e7d32;
+}
+
+#prog-blue::-webkit-progress-value {
+    background: #1565c0;
+}
+
+#prog-yellow::-webkit-progress-value {
+    background: #f9a825;
+}
+
+#prog-red::-webkit-progress-value {
+    background: #c62828;
+}
 
 #history-list li {
     list-style: none;
@@ -230,4 +318,39 @@ progress::-webkit-progress-bar { background: #eee; border-radius: 10px; }
     margin-bottom: 12px;
     border-radius: 12px;
     border: 2px solid #1a1a1a;
+}
+
+.tutorial-container {
+    display: flex;
+    flex-direction: column;
+    gap: 2em;
+    align-items: center;
+
+    .menu-btn {
+        width: 50%;
+    }
+}
+
+.tutorial-grid {
+    display: grid;
+    grid-template-columns: 10rem 40vw;
+    gap: 2em;
+}
+
+.tutorial-section {
+    text-align: right;
+    font-size: large;
+    font-weight: bold;
+}
+
+.tutorial-yap {
+    text-align: left;
+
+    p {
+        margin: 0;
+    }
+
+    ul {
+        margin-left: 1.5em;
+    }
 }
