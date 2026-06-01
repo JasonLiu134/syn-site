@@ -1,6 +1,5 @@
 let canvas = document.getElementById('canvas-bg');
 if (!canvas) {
-    // Create canvas element
     const newCanvas = document.createElement('canvas');
     newCanvas.id = 'canvas-bg';
     document.body.insertBefore(newCanvas, document.body.firstChild);
@@ -8,7 +7,14 @@ if (!canvas) {
 }
 const ctx = canvas.getContext('2d');
 
-// Resize canvas to window size
+canvas.style.position = 'fixed';
+canvas.style.top = '0';
+canvas.style.left = '0';
+canvas.style.width = '100%';
+canvas.style.height = '100%';
+canvas.style.zIndex = '-2'; 
+canvas.style.pointerEvents = 'none';
+
 function resize() {
     canvas.width = window.innerWidth;
     canvas.height = window.innerHeight;
@@ -16,23 +22,18 @@ function resize() {
 window.addEventListener('resize', resize);
 resize();
 
-// Configuration
-// Scale configuration based on screen size
 const screenArea = window.innerWidth * window.innerHeight;
 const screenDiagonal = Math.sqrt(window.innerWidth ** 2 + window.innerHeight ** 2);
 
-// Calculate particle count based on screen area
-let particleCount = Math.floor(screenArea / 7000);
-particleCount = Math.min(Math.max(particleCount, 80), 400); // Max # of points between 80 and 400 particles
+let particleCount = Math.floor(screenArea / 8500);
+particleCount = Math.min(Math.max(particleCount, 60), 250); 
 
-// Calculate max distance based on screen diagonal
-let maxDistance = Math.floor(screenDiagonal / 12.5);
-maxDistance = Math.min(Math.max(maxDistance, 100), 200); // Max line distance between 100 and 200 pixels
+let maxDistance = Math.floor(screenDiagonal / 14);
+maxDistance = Math.min(Math.max(maxDistance, 110), 180); 
 
-const speedFactor = 0.5;
-
-// Particle array
+const speedFactor = 0.4;
 const particles = [];
+
 for (let i = 0; i < particleCount; i++) {
     particles.push({
         x: Math.random() * canvas.width,
@@ -40,49 +41,50 @@ for (let i = 0; i < particleCount; i++) {
         vx: (Math.random() - 0.5) * speedFactor,
         vy: (Math.random() - 0.5) * speedFactor,
         radius: 2,
-        twinkleSpeed: 0.001 + Math.random() * 0.002, // Random twinkle speed
-        twinklePhase: Math.random() * Math.PI * 2    // Random starting phase
+        twinkleSpeed: 0.001 + Math.random() * 0.002, 
+        twinklePhase: Math.random() * Math.PI * 2    
     });
 }
 
-// Animation loop
-function animate() {
-    // Clear canvas
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
+function getActiveThemeColor() {
+    const rootStyles = getComputedStyle(document.documentElement);
+    const color = rootStyles.getPropertyValue('--current-theme-color-dark').trim();
+    
+    if (color === '#1a1a1a' || !color) {
+        return '255, 255, 255';
+    }
+    return hexToRgbChannels(color);
+}
 
-    // Update and draw particles
+function hexToRgbChannels(hex) {
+    hex = hex.replace(/^#/, '');
+    if (hex.length === 3) {
+        hex = hex.split('').map(s => s + s).join('');
+    }
+    const num = parseInt(hex, 16);
+    return `${(num >> 16) & 255}, ${(num >> 8) & 255}, ${num & 255}`;
+}
+
+function animate() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    
+    const rgbBase = getActiveThemeColor();
+
     particles.forEach((p) => {
-        // Update position
         p.x += p.vx;
         p.y += p.vy;
 
-        // Bounce off edges of screen
-        if (p.x < 0) {
-            p.x = 0;
-            p.vx = -p.vx;
-        }
-        if (p.x > canvas.width) {
-            p.x = canvas.width;
-            p.vx = -p.vx;
-        }
-        if (p.y < 0) {
-            p.y = 0;
-            p.vy = -p.vy;
-        }
-        if (p.y > canvas.height) {
-            p.y = canvas.height;
-            p.vy = -p.vy;
-        }
+        if (p.x < 0 || p.x > canvas.width) p.vx = -p.vx;
+        if (p.y < 0 || p.y > canvas.height) p.vy = -p.vy;
 
-        // Draw points
         ctx.beginPath();
         ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
-        let alpha = 0.5 + Math.sin(Date.now() * p.twinkleSpeed + p.twinklePhase) * 0.4; // Give some twinkle
-        ctx.fillStyle = `rgba(255, 255, 255, ${alpha})`;
+        
+        let alpha = 0.4 + Math.sin(Date.now() * p.twinkleSpeed + p.twinklePhase) * 0.3;
+        ctx.fillStyle = `rgba(${rgbBase}, ${alpha})`;
         ctx.fill();
     });
 
-    // Draw lines between nearby particles
     for (let i = 0; i < particles.length; i++) {
         for (let j = i + 1; j < particles.length; j++) {
             const p1 = particles[i];
@@ -95,18 +97,16 @@ function animate() {
                 ctx.beginPath();
                 ctx.moveTo(p1.x, p1.y);
                 ctx.lineTo(p2.x, p2.y);
-                // Calculate opacity - brighter when closer
+                
                 const opacity = Math.max(0, 1 - distance / maxDistance);
-                ctx.strokeStyle = `rgba(255, 255, 255, ${opacity * 0.5})`; // Max opacity 0.5 for subtle lines
-                ctx.lineWidth = 1;
+                ctx.strokeStyle = `rgba(${rgbBase}, ${opacity * 0.35})`; 
+                ctx.lineWidth = 0.75;
                 ctx.stroke();
             }
         }
     }
 
-    // Continue animation
     requestAnimationFrame(animate);
 }
 
-// Start animation with requestAnimationFrame for smooth 60fps
 animate();

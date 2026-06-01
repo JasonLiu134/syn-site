@@ -15,9 +15,9 @@
             <h1>Pax: More Than Human</h1>
             <p>SYN 100</p>
             <div class="menu-buttons">
-                <button class="menu-btn start-btn">Start (Normal)</button>
-                <button class="menu-btn start-btn">Start (No Random)</button>
-                <button class="menu-btn start-btn">Start (Quick)</button>
+                <button class="menu-btn start-btn" data-mode="normal">Normal Mode</button>
+                <button class="menu-btn start-btn" data-mode="random">Random Mode</button>
+                <button class="menu-btn start-btn" data-mode="quick">Quick Mode</button>
                 <div style="margin: 1%"></div>
                 <button id="tutorial-btn" class="menu-btn">Tutorial</button>
             </div>
@@ -41,7 +41,25 @@
 
     <div id="game-screen" class="screen hidden">
         <div class="app-container">
-            <div class="card-container">
+            
+            <div id="interstitial-container" class="interstitial-box ui-hidden">
+                <div id="bag-selection-view" class="sub-view ui-hidden">
+                    <h2>Select a Species System</h2>
+                    <div class="bag-buttons-grid">
+                        <button class="bag-choice-btn context-green" data-type="green">Plants & Fungal</button>
+                        <button class="bag-choice-btn context-blue" data-type="blue">Marine Life</button>
+                        <button class="bag-choice-btn context-yellow" data-type="yellow">Terrestrial Organisms</button>
+                        <button class="bag-choice-btn context-red" data-type="red">Flying Creatures</button>
+                    </div>
+                </div>
+                <div id="loading-view" class="sub-view ui-hidden">
+                    <div class="radar-spinner"></div>
+                    <h2>Pax Randomization Sequence</h2>
+                    <p>Generating species data...</p>
+                </div>
+            </div>
+
+            <div id="game-card-view" class="card-container">
                 <div id="main-card" class="card">
                     <div class="card-title-box">
                         <h1 id="card-title">Welcome!</h1>
@@ -62,25 +80,18 @@
             
             <h2>Progress Stats</h2>
             <div class="stats-container">
-                <div class="stat-row">
-                    <span class="stat-label">Plants/Fungal</span>
-                    <progress id="prog-green" value="0" max="5"></progress>
-                    <span id="score-green" class="stat-score">0</span>
+                <div class="segmented-bar-container">
+                    <div id="segment-green" class="bar-segment context-green" style="width: 0%;"></div>
+                    <div id="segment-blue" class="bar-segment context-blue" style="width: 0%;"></div>
+                    <div id="segment-yellow" class="bar-segment context-yellow" style="width: 0%;"></div>
+                    <div id="segment-red" class="bar-segment context-red" style="width: 0%;"></div>
                 </div>
-                <div class="stat-row">
-                    <span class="stat-label">Marine</span>
-                    <progress id="prog-blue" value="0" max="5"></progress>
-                    <span id="score-blue" class="stat-score">0</span>
-                </div>
-                <div class="stat-row">
-                    <span class="stat-label">Terrestrial</span>
-                    <progress id="prog-yellow" value="0" max="5"></progress>
-                    <span id="score-yellow" class="stat-score">0</span>
-                </div>
-                <div class="stat-row">
-                    <span class="stat-label">Flying</span>
-                    <progress id="prog-red" value="0" max="5"></progress>
-                    <span id="score-red" class="stat-score">0</span>
+                
+                <div class="stats-legend">
+                    <span><span class="legend-dot context-green"></span> Plants <span id="pct-green">0%</span></span>
+                    <span><span class="legend-dot context-blue"></span> Marine <span id="pct-blue">0%</span></span>
+                    <span><span class="legend-dot context-yellow"></span> Terrestrial <span id="pct-yellow">0%</span></span>
+                    <span><span class="legend-dot context-red"></span> Flying <span id="pct-red">0%</span></span>
                 </div>
             </div>
 
@@ -91,15 +102,12 @@
         </div>
     </div>
 
-    <div id="outro-screen" class="screen hidden">
+    <div id="outro-screen" class="screen hidden slow-fade">
         <div class="sequence-container">
             <div class="scroll-box">
                 <div id="outro-text" class="scroll-text">
                     <h2 id="outro-title">Ending</h2>
-                    <p id="outro-message">Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
-                    <p>Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo.</p>
-                    <p>Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt.</p>
-                    <p>Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit, sed quia non numquam eius modi tempora incidunt ut labore et dolore magnam aliquam quaerat voluptatem.</p>
+                    <p id="outro-message"></p>
                 </div>
             </div>
             <button id="outro-action-btn" class="control-btn center">Skip</button>
