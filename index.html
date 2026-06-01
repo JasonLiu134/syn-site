@@ -60,15 +60,32 @@
                 </div>
             </div>
 
-            <div id="game-card-view" class="card-container">
-                <div id="main-card" class="card">
-                    <div class="card-title-box">
-                        <h1 id="card-title">Welcome!</h1>
+            <div id="game-card-view" class="card-container welcome">
+                <div id="combined-card" class="card">
+                    <div class="card-columns">
+                        <div class="card-col" id="species-col">
+                            <div class="card-title-box">
+                                <h1 id="species-title">Welcome!</h1>
+                            </div>
+                            <div class="card-body">
+                                <p id="species-text">Click Next to start generating cards.</p>
+                            </div>
+                            <div class="card-bottom-bar">
+                                <span id="species-points" class="point-label"></span>
+                            </div>
+                        </div>
+                        <div class="card-col" id="individual-col">
+                            <div class="card-title-box">
+                                <h1 id="individual-title"></h1>
+                            </div>
+                            <div class="card-body">
+                                <p id="individual-text"></p>
+                            </div>
+                            <div class="card-bottom-bar">
+                                <span id="individual-points" class="point-label"></span>
+                            </div>
+                        </div>
                     </div>
-                    <div class="card-body">
-                        <p id="card-text">Click Next to start generating cards.</p>
-                    </div>
-                    <div id="card-bottom-bar" class="card-bottom-bar"></div>
                 </div>
             </div>
 

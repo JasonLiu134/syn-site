@@ -229,11 +229,82 @@ body {
 }
 
 .card-bottom-bar {
-    height: 45px;
+    min-height: 45px;
     width: 100%;
     background-color: var(--current-theme-color-dark, #1a1a1a);
     border-top: 2px solid #1a1a1a;
     transition: background-color 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 8px 14px;
+}
+
+.point-label {
+    color: #ffffff;
+    font-weight: 700;
+    font-size: 1rem;
+    text-align: center;
+    text-shadow: 0 1px 3px rgba(0, 0, 0, 0.45);
+}
+
+/* Species (类目) + individual (个体) live in ONE card sharing a single background.
+   Two columns inside, split by a divider; each column has its own point footer. */
+#combined-card {
+    width: 920px;
+    max-width: 94vw;
+    min-height: 440px;
+    padding: 0;
+}
+
+.card-columns {
+    display: flex;
+    flex-direction: row;
+    flex: 1;
+    align-items: stretch;
+}
+
+.card-col {
+    flex: 1 1 0;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+}
+
+#species-col {
+    border-right: 2px solid #1a1a1a;
+}
+
+.card-columns .card-body {
+    padding: 28px;
+    font-size: 1rem;
+    align-items: flex-start;
+    text-align: left;
+}
+
+/* Welcome / pre-game state: collapse to a single centered panel. */
+#game-card-view.welcome #individual-col {
+    display: none;
+}
+
+#game-card-view.welcome #species-col {
+    border-right: none;
+}
+
+#game-card-view.welcome .card-body {
+    align-items: center;
+    text-align: center;
+}
+
+/* Narrow screens: stack the two columns vertically, divider becomes horizontal. */
+@media (max-width: 900px) {
+    .card-columns {
+        flex-direction: column;
+    }
+    #species-col {
+        border-right: none;
+        border-bottom: 2px solid #1a1a1a;
+    }
 }
 
 .interstitial-box {
