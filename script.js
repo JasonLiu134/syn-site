@@ -26,7 +26,68 @@ const MODES = {
     'quick':  {type: 'bag', win: 3}
 };
 
-const cardData = [
+// --- DATA LAYER ---
+// The species/individual deck is the database in data/*.json, NOT hardcoded here.
+//   species-categories.json : habitat category -> [species names]
+//   species-info.json       : species name -> { speciesText, speciesEnding, individuals }
+// Each turn draws ONE species (类目, +1 to its ending) plus ONE of its individuals
+// (个体, +½ to its ending). The two are shown side by side and their points add up.
+
+// Habitat category name (in the JSON) -> the color/theme key used by the UI.
+const CATEGORY_BY_TYPE = {
+    green:  'Plants/Fungi',
+    blue:   'Marine',
+    yellow: 'Terrestrial',
+    red:    'Flying'
+};
+
+const VALID_ENDINGS = ['order', 'freedom', 'ascendance'];
+
+// Populated by loadData(): { categories: {...}, species: {...} }
+let DB = null;
+const dataReady = loadData();
+
+async function loadData() {
+    const [categories, species] = await Promise.all([
+        fetch('data/species-categories.json').then(r => r.json()),
+        fetch('data/species-info.json').then(r => r.json())
+    ]);
+    DB = { categories, species };
+
+    // Surface any individualEnding placeholders that still need real values.
+    const unresolved = [];
+    Object.entries(species).forEach(([name, sp]) => {
+        Object.entries(sp.individuals || {}).forEach(([k, ind]) => {
+            if (!VALID_ENDINGS.includes(normEnding(ind.individualEnding))) {
+                unresolved.push(`${name} #${k} (="${ind.individualEnding}")`);
+            }
+        });
+    });
+    if (unresolved.length) {
+        console.warn(
+            `[data] ${unresolved.length} individualEnding values are placeholders and ` +
+            `fall back to their species ending until filled:\n  ` + unresolved.join('\n  ')
+        );
+    }
+    return DB;
+}
+
+function normEnding(value) {
+    return (value || '').toString().trim().toLowerCase();
+}
+
+// Individual endings can differ from the species ending. When the JSON value is a
+// placeholder (foo/bar/bruh), fall back to the species ending so the +½ still scores.
+function resolveEnding(raw, fallback) {
+    const e = normEnding(raw);
+    return VALID_ENDINGS.includes(e) ? e : fallback;
+}
+
+function capitalize(str) {
+    return str ? str.charAt(0).toUpperCase() + str.slice(1) : str;
+}
+
+const _legacyCardData = [
     {title: "Ants", type: "yellow", ending: "order", text: "Their minds are so small I had to build new instruments just to measure them. And yet together they hum, all in one, moving as one, a million arms pulling toward one goal. Their structure is so simple and yet they build elaborate chambers underground, regulate temperature to within a degree, farm fungi, wage wars with chemical weapons, and have been doing all of this for a hundred million years. The humans thought they invented agriculture. They invented it sixty million years after ants did, and theirs collapsed within ten thousand. The ants are still farming. I am standing in what remains of the humans' last attempt at the same thing, and I do not know if I was sent here to study the ending or to prevent the next one."},
     {title: "Ants — Individual 1", type: "yellow", ending: "order", text: "I see one looking at a leaf. Correction: not looking, but perceiving. It perceives the leaf and something in it calls toward them. But it cannot move there. It must stay on the pheromone line leading it elsewhere, to its task and to its future. It moves away from the line for only a moment, then continues on its way. It dies later that day having never gone back. The other ants carry its body away to feed the workers. It is forgotten by everyone except me. I keep every record. I do not know what to call that."},
     {title: "Ants — Individual 2", type: "yellow", ending: "order", text: "A colony encounters a foreign ant from a rival colony that has wandered too far. The encounter lasts less than a second. The foreign ant is identified by chemical signature and killed. No deliberation. No error rate that I can detect across thousands of such encounters. The system works perfectly at the thing it is designed to do. I think about the things my system was designed to do and how well it worked at them and I find I cannot decide if efficiency is a virtue or just a description. The ants do not appear to have this problem. I think that might be the point."},
@@ -123,12 +184,38 @@ function shuffleArray(array) {
     return array;
 }
 
+// A pool holds the species names available for a habitat type, shuffled.
 function refreshPool(type) {
-    pools[type] = shuffleArray(cardData.filter(c => c.type === type));
+    const categoryName = CATEGORY_BY_TYPE[type];
+    const speciesNames = (DB && DB.categories[categoryName]) ? [...DB.categories[categoryName]] : [];
+    pools[type] = shuffleArray(speciesNames);
 }
 
 function refreshAllPools() {
     ['green', 'blue', 'yellow', 'red'].forEach(type => refreshPool(type));
+}
+
+// Build one full turn: a species (类目) + a random individual (个体) from it.
+function buildTurn(speciesName, type) {
+    const sp = DB.species[speciesName];
+    if (!sp) return null;
+
+    const speciesEnding = normEnding(sp.speciesEnding);
+
+    const individualKeys = Object.keys(sp.individuals || {});
+    const indKey = individualKeys[Math.floor(Math.random() * individualKeys.length)];
+    const ind = sp.individuals[indKey];
+    const individualEnding = resolveEnding(ind.individualEnding, speciesEnding);
+
+    return {
+        name: speciesName,
+        type,
+        speciesText: sp.speciesText,
+        speciesEnding,
+        indKey,
+        individualText: ind.individualText,
+        individualEnding
+    };
 }
 
 function resetGame() {
@@ -146,23 +233,22 @@ function resetGame() {
     document.documentElement.style.setProperty('--current-theme-color-dark', '#1a1a1a');
     document.documentElement.style.setProperty('--current-theme-color-faint', 'rgba(0,0,0,0.05)');
 
-    document.getElementById('game-card-view').classList.remove('ui-hidden');
-    document.getElementById('interstitial-container').classList.add('ui-hidden');
-    document.getElementById('card-title').textContent = "Welcome!";
-    document.getElementById('card-text').textContent = "Click Next to Start the Game.";
-
     const gameCardView = document.getElementById('game-card-view');
-    if (gameCardView) {
-        gameCardView.style.backgroundImage = 'none';
-        gameCardView.style.background = '';
-    }
+    gameCardView.classList.remove('ui-hidden');
+    gameCardView.classList.add('welcome');
+    document.getElementById('interstitial-container').classList.add('ui-hidden');
 
-    const activeCard = document.querySelector('.card');
-    if (activeCard) {
-        activeCard.style.backgroundImage = 'none';
-        activeCard.style.background = '';
-        activeCard.className = 'card';
-    }
+    // Welcome state: single species card carries the prompt, individual card hidden.
+    document.getElementById('species-title').textContent = "Welcome!";
+    document.getElementById('species-text').textContent = "Click Next to Start the Game.";
+    document.getElementById('species-points').textContent = "";
+    document.getElementById('individual-title').textContent = "";
+    document.getElementById('individual-text').textContent = "";
+    document.getElementById('individual-points').textContent = "";
+
+    document.querySelectorAll('#game-card-view .card').forEach(card => {
+        card.className = 'card';
+    });
 }
 
 function setCardVisuals(type) {
@@ -170,11 +256,10 @@ function setCardVisuals(type) {
     root.style.setProperty('--current-theme-color-dark', themes[type].dark);
     root.style.setProperty('--current-theme-color-faint', themes[type].faint);
 
-    const card = document.getElementById('main-card');
-    if (card) {
+    document.querySelectorAll('#game-card-view .card').forEach(card => {
         card.classList.remove('type-green', 'type-blue', 'type-yellow', 'type-red');
         card.classList.add(`type-${type}`);
-    }
+    });
 }
 
 function queueNextStep() {
@@ -194,57 +279,76 @@ function queueNextStep() {
     } else {
         document.getElementById('bag-selection-view').classList.add('ui-hidden');
         document.getElementById('loading-view').classList.remove('ui-hidden');
-        
+
         setTimeout(() => {
-            processCardSelection(getRandomCardFromDeck());
+            processTurn(drawTurn(getRandomAvailableType()));
         }, 1200);
     }
 }
 
-function getRandomCardFromDeck() {
+function getRandomAvailableType() {
     let availableTypes = ['green', 'blue', 'yellow', 'red'].filter(type => pools[type].length > 0);
-    
     if (availableTypes.length === 0) {
         refreshAllPools();
         availableTypes = ['green', 'blue', 'yellow', 'red'];
     }
-    
-    const randomType = availableTypes[Math.floor(Math.random() * availableTypes.length)];
-    return pools[randomType].pop();
+    return availableTypes[Math.floor(Math.random() * availableTypes.length)];
 }
 
-function getCategorizedCardFromDeck(type) {
+// Draw the next species name for a habitat type, then assemble the full turn.
+function drawTurn(type) {
     if (pools[type].length === 0) {
         refreshPool(type);
     }
-    
-    return pools[type].pop();
+    const speciesName = pools[type].pop();
+    return buildTurn(speciesName, type);
 }
 
-function processCardSelection(card) {
-    if (!card) return;
+function processTurn(turn) {
+    if (!turn) return;
 
-    scores[card.type]++;
-    updateStats(card.type);
+    // The habitat bag counts one draw per turn (drives the progress bar).
+    scores[turn.type]++;
+    updateStats();
 
-    if (card.ending) {
-        endingScores[card.ending]++;
-    }
-    
-    cardHistory.push(card);
+    // Points add up: species +1, individual +½, each toward its own ending.
+    endingScores[turn.speciesEnding] += 1;
+    endingScores[turn.individualEnding] += 0.5;
+
+    cardHistory.push(turn);
     updateHistory();
-    setCardVisuals(card.type);
-
-    document.getElementById('card-title').textContent = card.title;
-    document.getElementById('card-text').textContent = card.text;
+    setCardVisuals(turn.type);
+    renderTurn(turn);
 
     document.getElementById('interstitial-container').classList.add('ui-hidden');
     document.getElementById('game-card-view').classList.remove('ui-hidden');
 
-    if (card.ending && endingScores[card.ending] >= currentMode.win) {
+    // First ending to reach the threshold wins; ties resolve to the higher score.
+    const reached = VALID_ENDINGS
+        .filter(e => endingScores[e] >= currentMode.win)
+        .sort((a, b) => endingScores[b] - endingScores[a]);
+    if (reached.length) {
         gameOver = true;
-        pendingEnding = card.ending; 
+        pendingEnding = reached[0];
     }
+}
+
+function formatPoints(amount, ending) {
+    const sign = amount === 0.5 ? '+½' : `+${amount}`;
+    return `${sign} point to ${capitalize(ending)} Ending`;
+}
+
+function renderTurn(turn) {
+    const view = document.getElementById('game-card-view');
+    view.classList.remove('welcome');
+
+    document.getElementById('species-title').textContent = turn.name;
+    document.getElementById('species-text').textContent = turn.speciesText;
+    document.getElementById('species-points').textContent = formatPoints(1, turn.speciesEnding);
+
+    document.getElementById('individual-title').textContent = `${turn.name} — Individual ${turn.indKey}`;
+    document.getElementById('individual-text').textContent = turn.individualText;
+    document.getElementById('individual-points').textContent = formatPoints(0.5, turn.individualEnding);
 }
 
 function updateStats() {
@@ -270,10 +374,13 @@ function updateHistory() {
     const list = document.getElementById('history-list');
     if (!list) return;
     list.innerHTML = '';
-    [...cardHistory].reverse().forEach(item => {
+    [...cardHistory].reverse().forEach(turn => {
         const li = document.createElement('li');
-        li.style.backgroundColor = themes[item.type].faint;
-        li.innerHTML = `<strong>${item.title}</strong><br>${item.text}`;
+        li.style.backgroundColor = themes[turn.type].faint;
+        li.innerHTML =
+            `<strong>${turn.name}</strong> — ${formatPoints(1, turn.speciesEnding)}<br>${turn.speciesText}` +
+            `<hr style="margin:10px 0;border:none;border-top:1px solid rgba(0,0,0,0.15);">` +
+            `<strong>Individual ${turn.indKey}</strong> — ${formatPoints(0.5, turn.individualEnding)}<br>${turn.individualText}`;
         list.appendChild(li);
     });
 }
@@ -315,8 +422,9 @@ function triggerOutro(endingKey) {
 }
 
 document.querySelectorAll('.start-btn').forEach(btn => {
-    btn.addEventListener('click', () => {
+    btn.addEventListener('click', async () => {
         currentMode = MODES[btn.dataset.mode] || MODES.normal;
+        await dataReady;          // ensure the JSON deck is loaded before building pools
         resetGame();
         startIntro();
     });
@@ -325,8 +433,7 @@ document.querySelectorAll('.start-btn').forEach(btn => {
 document.querySelectorAll('.bag-choice-btn').forEach(btn => {
     btn.addEventListener('click', () => {
         const chosenType = btn.dataset.type;
-        const card = getCategorizedCardFromDeck(chosenType);
-        processCardSelection(card);
+        processTurn(drawTurn(chosenType));
     });
 });
 
