@@ -51,21 +51,16 @@ body {
     box-shadow: 0 15px 45px rgba(0, 0, 0, 0.1);
     text-align: center;
 
-    h1 {
-        font-size: 2rem;
-        color: #1a1a1a;
-        margin-bottom: 10px;
-    }
-
-    p {
-        color: #555;
-        margin-bottom: 30px;
-    }
+    background-image: linear-gradient(rgba(0,0,0,0.3), rgba(0,0,0,0.7)), /* semi-transparent overlay */
+    url('./assets/images/front-page-bg.png');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
 }
 
 .menu-container h1 {
     font-size: 2rem;
-    color: #1a1a1a;
+    color: white;
     margin-bottom: 10px;
 }
 
