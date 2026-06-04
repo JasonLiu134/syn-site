@@ -388,11 +388,11 @@ function startIntro() {
     introText.parentElement.classList.remove('show-all-box');
 
     introText.classList.remove('scrolling');
-    introText.style.top = '100%';
+    introText.style.top = '0%';
 
     introActionBtn.textContent = "Skip";
     introActionBtn.dataset.state = "skipping";
-    
+
     void introText.offsetWidth;
     introText.classList.add('scrolling');
 }
