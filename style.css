@@ -682,4 +682,26 @@ body {
     .dropdown-select {
         max-width: 100%;
     }
+
+    /* 8. Fix Top Cut-off and Enable Scrolling */
+    body {
+        height: auto;
+        min-height: 100vh;
+    }
+
+    .screen {
+        height: 100vh; 
+        overflow-y: auto; /* Allows the screen to scroll vertically */
+        align-items: flex-start; /* Stops flexbox from pushing the top off-screen */
+        padding: 40px 0; /* Gives some breathing room at the top and bottom */
+    }
+
+    /* This magically re-centers elements vertically ONLY if they are shorter than the screen */
+    .menu-container, 
+    .tutorial-container,
+    .interstitial-box,
+    .card,
+    .sequence-container {
+        margin: auto; 
+    }
 }
