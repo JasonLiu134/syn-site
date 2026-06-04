@@ -383,11 +383,16 @@ function showFullText(textElement, btnElement, nextActionText) {
 
 function startIntro() {
     switchScreen('intro');
+
     introText.classList.remove('show-all');
     introText.parentElement.classList.remove('show-all-box');
+
+    introText.classList.remove('scrolling');
+    introText.style.top = '100%';
+
     introActionBtn.textContent = "Skip";
     introActionBtn.dataset.state = "skipping";
-    introText.classList.remove('scrolling');
+    
     void introText.offsetWidth;
     introText.classList.add('scrolling');
 }
