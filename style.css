@@ -136,12 +136,12 @@ body {
 }
 
 .scrolling {
-    animation: scrollUp 15s linear forwards;
+    animation: scrollUp 20s linear forwards;
 }
 
 @keyframes scrollUp {
     0% { top: 100%; }
-    100% { top: -100%; }
+    100% { top: -350%; }
 }
 
 .scroll-box.show-all-box {
@@ -277,7 +277,6 @@ body {
     text-align: left;
 }
 
-/* Welcome / pre-game state: collapse to a single centered panel. */
 #game-card-view.welcome #individual-col {
     display: none;
 }
@@ -291,7 +290,6 @@ body {
     text-align: center;
 }
 
-/* Narrow screens: stack the two columns vertically, divider becomes horizontal. */
 @media (max-width: 900px) {
     .card-columns {
         flex-direction: column;
@@ -332,7 +330,8 @@ body {
     margin-top: 10px;
 }
 
-.bag-choice-btn {
+.bag-choice-btn, 
+.sel-cat-btn {
     padding: 16px;
     font-size: 1rem;
     font-weight: 600;
@@ -343,15 +342,17 @@ body {
     transition: transform 0.15s, filter 0.2s;
 }
 
-.bag-choice-btn:hover {
+.bag-choice-btn:hover, 
+.sel-cat-btn:hover {
     transform: translateY(-2px);
     filter: brightness(0.9);
 }
 
-.context-green { background-color: #2e7d32; }
-.context-blue  { background-color: #1565c0; }
-.context-yellow { background-color: #ce8919; }
-.context-red   { background-color: #c62828; }
+/* Habitat Background Colors */
+.context-green { background-color: #2e7d32 !important; }
+.context-blue  { background-color: #1565c0 !important; }
+.context-yellow { background-color: #ce8919 !important; }
+.context-red   { background-color: #c62828 !important; }
 
 .radar-spinner {
     width: 50px;
@@ -485,5 +486,170 @@ body {
 
     ul {
         margin-left: 1.5em;
+    }
+}
+
+.tutorial-container {
+    background-image: linear-gradient(rgba(255,255,255,0.65), rgba(255,255,255,0.75)), url('./assets/images/front-page-bg.png') !important;
+    color: #1a1a1a;
+}
+.tutorial-container h1, .tutorial-section {
+    color: #1a1a1a;
+}
+
+.card.type-green .card-title-box { 
+    background: rgba(212, 243, 209, 0.65); 
+}
+.card.type-green .card-body{ 
+    background: rgba(207, 225, 205, 0.55); 
+}
+
+.card.type-blue .card-title-box { 
+    background: rgba(201, 222, 245, 0.5); 
+}
+.card.type-blue .card-body {
+    background: rgba(201, 222, 245, 0.4); 
+}
+
+.card.type-yellow .card-title-box { 
+    background: rgba(255, 208, 0, 0.1); 
+}
+
+.card.type-red .card-title-box { 
+    background: rgba(255, 0, 0, 0.1); 
+}
+.card.type-red .card-body {
+    background: rgba(255, 0, 0, 0.01); 
+}
+
+.dropdown-select {
+    padding: 12px;
+    font-size: 1.1rem;
+    width: 100%;
+    max-width: 400px;
+    border-radius: 8px;
+    border: 2px solid #1a1a1a;
+    background-color: white;
+    cursor: pointer;
+}
+
+.ending-stats-container {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    margin-bottom: 20px;
+    margin-top: 15px;
+}
+.ending-stat span { 
+    font-weight: 700; 
+    font-size: 0.95rem; 
+    color: #1a1a1a; 
+}
+.progress-bar-bg { 
+    width: 100%; 
+    height: 14px; 
+    background: #e0e0e0; 
+    border: 1px solid #ccc; 
+    border-radius: 8px; 
+    overflow: hidden; 
+    margin-top: 5px; 
+}
+.progress-bar-fill { 
+    height: 100%; 
+    transition: width 0.4s ease; 
+}
+#bar-order { background: #555; }
+#bar-freedom { background: #4caf50; }
+#bar-ascendance { background: #9c27b0; }
+
+.three-col-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 15px;
+    width: 100%;
+    max-width: 600px;
+    margin-top: 20px;
+}
+
+.sel-species-btn {
+    padding: 16px;
+    font-size: 1rem;
+    font-weight: 600;
+    color: white;
+    border: 2px solid #1a1a1a;
+    border-radius: 14px;
+    cursor: pointer;
+    transition: transform 0.15s, filter 0.2s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+}
+
+.sel-species-btn:hover {
+    transform: translateY(-2px);
+    filter: brightness(0.9);
+}
+
+/* Mobile Config */
+@media (max-width: 768px) {
+    /* Menus & Containers */
+    .menu-container, .tutorial-container {
+        padding: 5vw;
+        width: 90%;
+    }
+    
+    .tutorial-grid {
+        grid-template-columns: 1fr; /* Stack tutorial items */
+        gap: 1em;
+    }
+    
+    .tutorial-section {
+        text-align: left; /* Align headers on mobile */
+    }
+
+    /* Cards & Interstitials */
+    .interstitial-box, 
+    .card, 
+    #combined-card {
+        width: 95vw;
+        min-height: auto;
+        padding: 15px;
+    }
+    
+    .card-body {
+        padding: 20px 15px;
+        font-size: 0.95rem;
+    }
+
+    /* Selection Grids */
+    .bag-buttons-grid {
+        grid-template-columns: 1fr; /* Stack buttons instead of 2x2 */
+        gap: 10px;
+    }
+
+    /* Floating Navigation Controls */
+    .control-btn {
+        padding: 10px 15px;
+        font-size: 0.9rem;
+        bottom: 15px;
+    }
+    .left { left: 15px; }
+    .right { right: 15px; }
+
+    /* Side History Menu */
+    .side-menu {
+        width: 85vw; /* Don't take up the full screen */
+        left: -100%;
+        padding: 20px;
+    }
+    
+    .scroll-box { 
+        height: 50vh; /* Better spacing for intro/outro text */
+    }
+
+    .three-col-grid {
+        grid-template-columns: 1fr; /* Stacks the 3 buttons vertically on small screens */
+        gap: 12px;
     }
 }

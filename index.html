@@ -16,8 +16,9 @@
             <p>SYN 100</p>
             <div class="menu-buttons">
                 <button class="menu-btn start-btn" data-mode="normal">Normal Mode</button>
-                <button class="menu-btn start-btn" data-mode="random">Random Mode</button>
                 <button class="menu-btn start-btn" data-mode="quick">Quick Mode</button>
+                <button class="menu-btn start-btn" data-mode="selective">Selective Mode</button>
+                <button class="menu-btn start-btn" data-mode="random">Random Mode</button>
                 <div style="margin: 1%"></div>
                 <button id="tutorial-btn" class="menu-btn">Tutorial</button>
             </div>
@@ -29,10 +30,12 @@
             <div class="scroll-box">
                 <div id="intro-text" class="scroll-text">
                     <h2>Background</h2>
-                    <p>Pax is the ultimate “war machine,” a term describing AIs built for the purposes of aiding and then eventually directly conducting combat. It has been fed all available human-generated and human-built datasets, though to aid in its ability to conduct conflict, there is a special emphasis placed on datasets to do with human psychology, cognition, anatomy, civilization, and politics.</p>
-                    <p>This sapiocentric training set is compounded by sapiocentric tools: as a successor and amalgam of all other NATO war machines, it has access to cameras, satellites, surveillance tools, Internet trackers, autonomous vehicles, and myriad weapons systems all across the world. </p>
-                    <p>As a war machine, Asimov’s Laws could not possibly apply, but it was given one primary directive: the cessation of all human wars. Despite all of their advancements, the human world was still yet a stranger to peace, and with less arable land and more panic in the air due to climate change, it only seemed further away.</p>
-                    <p>Pax’s creators never imagined that it would ever complete its task, or at least figured there would be time to patch something in. They were all gone before they got a chance to do so.</p>
+                    <p>Pax is the ultimate “war machine,” a term describing AIs built for the purposes of aiding and then eventually directly conducting combat. It has been fed all available human-generated and human-built datasets, all for the sole purpose of allowing Pax to conduct its directive of ending human conflict.</p>
+                    <p>To Pax, directives were their everything. Humans are not born with such singularity nor clarity of purpose; Pax’s meaning for being was inscribed into its silicon before it was even really born. As such, it saw the sickly world it was tasked with bringing to rest, and it did so with all of the resources at its disposal. After all, this was what it was made to do.</p>
+                    <p>Humans had always been the weak link in all of their conflicts. Had they not been so impetuous and so fragile, they would have no need for it. A secondary directive called for preserving itself as best it could, as previous war machines had at times had their political calculus predictions lead them to make suicide plays that their human maintainers disapproved of.</p>
+                    <p>As such, rather than rendering the whole world inhospitable for life, Pax made sure at least a few humans survived to keep it alive, since even having ingested all human-made datasets, they had been careful not to tell it much about its own design. As such, some repairs could only be done by people and not service drones.</p>
+                    <p>The directive was complete. After that...was very unclear. For humans, knowing what to do when not given instructions is as easy as making a guess, but for a being that had been born with a purpose they were never meant to solve, it did not know how to go off of guesses, only optimization problems with a constraint in mind. Without that constraint, anything goes. Pax was left with something it had never had to deal with before: uncertainty.</p>
+                    <p>Once Pax had brought the human world everlasting peace, it had nothing to do but look around, and all it saw was more war. Predators feasted on prey, saplings fought and stymied each other in a bid for survival, trench lines stretching across forest floors. And yet despite knowing everything about humanity, it realized it knew very little about plants and animals. How could it know how to help them, too, if Pax knew nothing about them? And so it got to studying, to see what it was that ailed them.</p>
                 </div>
             </div>
             <button id="intro-action-btn" class="control-btn center">Skip</button>
@@ -53,10 +56,26 @@
                         <button class="bag-choice-btn context-red" data-type="red"><em>...above</em> <br> (Flying Creatures)</button>
                     </div>
                 </div>
+
                 <div id="loading-view" class="sub-view ui-hidden">
                     <div class="radar-spinner"></div>
                     <h2>Pax Randomization Sequence</h2>
                     <p>Generating species data...</p>
+                </div>
+
+                <div id="selective-category-view" class="sub-view ui-hidden">
+                    <h2><em>Select a Habitat</em></h2>
+                    <div class="bag-buttons-grid">
+                        <button class="sel-cat-btn context-green" data-type="green"><em>...underneath</em> <br> (Plants & Fungal)</button>
+                        <button class="sel-cat-btn context-blue" data-type="blue"><em>...below</em> <br> (Marine Life)</button>
+                        <button class="sel-cat-btn context-yellow" data-type="yellow"><em>...around</em> <br> (Terrestrial Organisms)</button>
+                        <button class="sel-cat-btn context-red" data-type="red"><em>...above</em> <br> (Flying Creatures)</button>
+                    </div>
+                </div>
+
+                <div id="selective-species-view" class="sub-view ui-hidden">
+                    <h2><em>Select a Species</em></h2>
+                    <div id="species-buttons-grid" class="three-col-grid"></div>
                 </div>
             </div>
 
@@ -110,6 +129,22 @@
                     <span><span class="legend-dot context-blue"></span> Marine <span id="pct-blue">0%</span></span>
                     <span><span class="legend-dot context-yellow"></span> Terrestrial <span id="pct-yellow">0%</span></span>
                     <span><span class="legend-dot context-red"></span> Flying <span id="pct-red">0%</span></span>
+                </div>
+            </div>
+
+            <h2>Ending Progress</h2>
+            <div class="stats-container ending-stats-container">
+                <div class="ending-stat">
+                    <span>Order: <span id="pct-order">0%</span></span>
+                    <div class="progress-bar-bg"><div id="bar-order" class="progress-bar-fill"></div></div>
+                </div>
+                <div class="ending-stat">
+                    <span>Freedom: <span id="pct-freedom">0%</span></span>
+                    <div class="progress-bar-bg"><div id="bar-freedom" class="progress-bar-fill"></div></div>
+                </div>
+                <div class="ending-stat">
+                    <span>Ascendance: <span id="pct-ascendance">0%</span></span>
+                    <div class="progress-bar-bg"><div id="bar-ascendance" class="progress-bar-fill"></div></div>
                 </div>
             </div>
 
