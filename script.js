@@ -466,7 +466,7 @@ outroText.addEventListener('animationend', () => {
 document.getElementById('next-btn').addEventListener('click', queueNextStep);
 
 document.getElementById('menu-btn').addEventListener('click', () => {
-    document.getElementById('history-menu').classList.add('open');
+    document.getElementById('history-menu').classList.toggle('open');
 });
 document.getElementById('close-btn').addEventListener('click', () => {
     document.getElementById('history-menu').classList.remove('open');
