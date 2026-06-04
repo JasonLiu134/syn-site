@@ -696,6 +696,28 @@ body {
         padding: 40px 0; /* Gives some breathing room at the top and bottom */
     }
 
+    .app-container {
+        justify-content: flex-start; 
+        min-height: 100vh;
+        height: auto;
+        padding-top: 20px;     /* Top padding to prevent touching the edge */
+        padding-bottom: 100px; /* Bottom padding so buttons don't cover content */
+        display: flex;
+        flex-direction: column;
+    }
+
+    /* 2. Pin buttons to the bottom of the viewport so they are always accessible */
+    .control-btn {
+        position: fixed !important;
+        bottom: 20px;
+        z-index: 1000; /* Ensures they appear above the cards */
+        width: auto;
+    }
+
+    /* Keep buttons at their respective left/right corners */
+    .left { left: 20px; }
+    .right { right: 20px; }
+
     /* This magically re-centers elements vertically ONLY if they are shorter than the screen */
     .menu-container, 
     .tutorial-container,
