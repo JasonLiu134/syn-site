@@ -558,9 +558,9 @@ body {
     height: 100%; 
     transition: width 0.4s ease; 
 }
-#bar-order { background: #555; }
-#bar-freedom { background: #4caf50; }
-#bar-ascendance { background: #9c27b0; }
+#bar-order { background: #3086c4; }
+#bar-freedom { background: #25e769; }
+#bar-ascendance { background: #ab00ca; }
 
 .three-col-grid {
     display: grid;

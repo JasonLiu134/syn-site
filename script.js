@@ -312,7 +312,7 @@ function processTurn(turn) {
 
 function formatPoints(amount, ending) {
     const sign = amount === 0.5 ? '+½' : `+${amount}`;
-    return `${sign} point to ${capitalize(ending)} Ending`;
+    return `${capitalize(ending)} ${sign} Point`;
 }
 
 function renderTurn(turn) {
