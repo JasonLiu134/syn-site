@@ -591,65 +591,95 @@ body {
     filter: brightness(0.9);
 }
 
-/* Mobile Config */
+/* =========================================
+   MOBILE COMPATIBILITY FIXES
+   ========================================= */
+
 @media (max-width: 768px) {
-    /* Menus & Containers */
-    .menu-container, .tutorial-container {
-        padding: 5vw;
-        width: 90%;
+    /* 1. Resize Main Containers */
+    .menu-container, 
+    .tutorial-container {
+        padding: 8vw 5vw;
+        width: 92%;
     }
-    
+
+    /* 2. Fix Card and Modal Widths */
+    .interstitial-box, 
+    .card {
+        width: 92vw;
+        min-height: auto;
+        padding: 20px;
+    }
+
+    #combined-card {
+        width: 92vw;
+    }
+
+    /* 3. Adjust Card Interior Spacing */
+    .card-body {
+        padding: 20px;
+        font-size: 1rem;
+    }
+
+    .card-title-box {
+        padding: 15px;
+    }
+
+    .card-title-box h1 {
+        font-size: 1.2rem;
+    }
+
+    /* 4. Stack Grid Elements Vertically */
+    .bag-buttons-grid {
+        grid-template-columns: 1fr; /* Changes 2x2 grid to 1x4 stack */
+        gap: 12px;
+    }
+
     .tutorial-grid {
-        grid-template-columns: 1fr; /* Stack tutorial items */
-        gap: 1em;
+        grid-template-columns: 1fr;
+        gap: 1.5em;
     }
     
     .tutorial-section {
-        text-align: left; /* Align headers on mobile */
+        text-align: left; /* Align headers with body text on mobile */
     }
 
-    /* Cards & Interstitials */
-    .interstitial-box, 
-    .card, 
-    #combined-card {
-        width: 95vw;
-        min-height: auto;
-        padding: 15px;
+    /* 5. Fix Navigation Button Placement */
+    .control-btn {
+        padding: 12px 20px;
+        font-size: 0.95rem;
+        bottom: 20px;
     }
     
-    .card-body {
-        padding: 20px 15px;
-        font-size: 0.95rem;
-    }
-
-    /* Selection Grids */
-    .bag-buttons-grid {
-        grid-template-columns: 1fr; /* Stack buttons instead of 2x2 */
-        gap: 10px;
-    }
-
-    /* Floating Navigation Controls */
-    .control-btn {
-        padding: 10px 15px;
-        font-size: 0.9rem;
-        bottom: 15px;
-    }
     .left { left: 15px; }
     .right { right: 15px; }
 
-    /* Side History Menu */
+    /* 6. Adjust the Slide-Out History Menu */
     .side-menu {
-        width: 85vw; /* Don't take up the full screen */
-        left: -100%;
+        width: 85vw; /* Leaves a bit of screen showing behind the menu */
+        left: -100%; /* Ensures it hides completely off-screen when closed */
         padding: 20px;
     }
-    
-    .scroll-box { 
-        height: 50vh; /* Better spacing for intro/outro text */
+
+    .stats-legend {
+        flex-direction: column; /* Stack the legend items */
+        gap: 8px;
     }
 
-    .three-col-grid {
-        grid-template-columns: 1fr; /* Stacks the 3 buttons vertically on small screens */
-        gap: 12px;
+    /* 7. Optimize the Scrolling Text Screens */
+    .scroll-box {
+        height: 50vh; 
+    }
+    
+    .scroll-text h2 {
+        font-size: 1.5rem;
+    }
+    
+    .scroll-text p {
+        font-size: 1rem;
+    }
+    
+    .dropdown-select {
+        max-width: 100%;
     }
 }
