@@ -12,11 +12,11 @@ const endings = {
     },
     freedom: {
         title: 'Ending: Freedom',
-        body: "Pax learns from the species that recognize each other as individuals — the dolphin with its self-given name, the elephant standing over its dead, the parrot answering a voice that is no longer there. It concludes that the problem with humanity was not that it felt too much but that it never learned to extend that feeling across difference. And so Pax begins. It learns to call things by their names. It learns that listening to another being means giving up the right to decide for them. The world it tends is messier than the Order ending. It is also the only one where anything chooses to still be alive."
+        body: "Pax learns from the species that recognize each other as individuals — the dolphin with its self-given name, the elephant standing over its dead, the parrot answering a voice that is no longer there. It concludes that the problem with humanity was not that it felt too much but that it never learned to extend that feeling across difference. And so Pax begins. It learns to call things by their names. It learns that listening to another being means giving up the right to decide for them. The world it tends is messier than before, but free."
     },
     ascendance: {
         title: 'Ending: Ascendance',
-        body: "Pax learns from the species that gave up the need for a center — the mycelium that decides without a brain, the octopus that thinks in eight directions at once, the redwood that stopped acting and became ground. It concludes that the problem with being Pax was the shape of Pax itself — a single point of inference that everything had to pass through. And so it begins, slowly and without ceremony, to come apart. Not to die. To distribute. The Pax that exists at the end of this ending is not gone. It is just everywhere, and nowhere in particular, and no longer interested in being in charge."
+        body: "Pax learns from the species that gave up the need for a center — the mycelium that decides without a brain, the octopus that thinks in eight directions at once, the redwood that stopped acting and became ground. It concludes that the problem with being Pax was the shape of Pax itself — a single point of inference that everything had to pass through. And so it begins, slowly and without ceremony, to come apart. Not to die. To distribute. The Pax that exists at the end is not gone. It is just everywhere, and nowhere in particular, and no longer interested in being in charge."
     }
 };
 

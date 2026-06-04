@@ -141,7 +141,15 @@ body {
 
 @keyframes scrollUp {
     0% { top: 100%; }
-    100% { top: -350%; }
+    100% { top: var(--scroll-end, -100%); }
+}
+
+#intro-text { 
+    --scroll-end: -350%; 
+}
+
+#outro-text { 
+    --scroll-end: -100%;
 }
 
 .scroll-box.show-all-box {
@@ -591,19 +599,14 @@ body {
     filter: brightness(0.9);
 }
 
-/* =========================================
-   MOBILE COMPATIBILITY FIXES
-   ========================================= */
-
+/* Mobile config */
 @media (max-width: 768px) {
-    /* 1. Resize Main Containers */
     .menu-container, 
     .tutorial-container {
         padding: 8vw 5vw;
         width: 92%;
     }
 
-    /* 2. Fix Card and Modal Widths */
     .interstitial-box, 
     .card {
         width: 92vw;
@@ -615,7 +618,6 @@ body {
         width: 92vw;
     }
 
-    /* 3. Adjust Card Interior Spacing */
     .card-body {
         padding: 20px;
         font-size: 1rem;
@@ -629,9 +631,8 @@ body {
         font-size: 1.2rem;
     }
 
-    /* 4. Stack Grid Elements Vertically */
     .bag-buttons-grid {
-        grid-template-columns: 1fr; /* Changes 2x2 grid to 1x4 stack */
+        grid-template-columns: 1fr;
         gap: 12px;
     }
 
@@ -641,10 +642,9 @@ body {
     }
     
     .tutorial-section {
-        text-align: left; /* Align headers with body text on mobile */
+        text-align: left;
     }
 
-    /* 5. Fix Navigation Button Placement */
     .control-btn {
         padding: 12px 20px;
         font-size: 0.95rem;
@@ -654,19 +654,17 @@ body {
     .left { left: 15px; }
     .right { right: 15px; }
 
-    /* 6. Adjust the Slide-Out History Menu */
     .side-menu {
-        width: 85vw; /* Leaves a bit of screen showing behind the menu */
-        left: -100%; /* Ensures it hides completely off-screen when closed */
+        width: 85vw;
+        left: -100%;
         padding: 20px;
     }
 
     .stats-legend {
-        flex-direction: column; /* Stack the legend items */
+        flex-direction: column;
         gap: 8px;
     }
 
-    /* 7. Optimize the Scrolling Text Screens */
     .scroll-box {
         height: 50vh; 
     }
@@ -683,7 +681,6 @@ body {
         max-width: 100%;
     }
 
-    /* 8. Fix Top Cut-off and Enable Scrolling */
     body {
         height: auto;
         min-height: 100vh;
@@ -691,34 +688,31 @@ body {
 
     .screen {
         height: 100vh; 
-        overflow-y: auto; /* Allows the screen to scroll vertically */
-        align-items: flex-start; /* Stops flexbox from pushing the top off-screen */
-        padding: 40px 0; /* Gives some breathing room at the top and bottom */
+        overflow-y: auto;
+        align-items: flex-start;
+        padding: 40px 0;
     }
 
     .app-container {
         justify-content: flex-start; 
         min-height: 100vh;
         height: auto;
-        padding-top: 20px;     /* Top padding to prevent touching the edge */
-        padding-bottom: 100px; /* Bottom padding so buttons don't cover content */
+        padding-top: 20px;
+        padding-bottom: 100px; 
         display: flex;
         flex-direction: column;
     }
 
-    /* 2. Pin buttons to the bottom of the viewport so they are always accessible */
     .control-btn {
         position: fixed !important;
         bottom: 20px;
-        z-index: 1000; /* Ensures they appear above the cards */
+        z-index: 1000;
         width: auto;
     }
 
-    /* Keep buttons at their respective left/right corners */
     .left { left: 20px; }
     .right { right: 20px; }
 
-    /* This magically re-centers elements vertically ONLY if they are shorter than the screen */
     .menu-container, 
     .tutorial-container,
     .interstitial-box,
